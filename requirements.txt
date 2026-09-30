@@ -1,0 +1,21 @@
+# Core LangChain & Google GenAI
+langchain>=1.4.0
+langchain-core>=1.6.0
+langchain-google-genai>=4.4.0
+langgraph>=1.2.0
+
+# Web Scraping & Search
+ddgs>=9.16.0
+duckduckgo-search>=8.1.0
+beautifulsoup4>=4.15.0
+trafilatura>=2.2.0
+lxml>=6.1.0
+requests>=2.34.0
+httpx>=0.28.0
+
+# UI & Data Presentation
+streamlit>=1.64.0
+plotly>=7.1.0
+pandas>=3.0.0
+pydantic>=2.13.0
+python-dotenv>=1.2.0
