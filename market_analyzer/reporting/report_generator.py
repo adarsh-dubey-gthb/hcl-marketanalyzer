@@ -8,7 +8,15 @@ def generate_markdown_report(report: MarketIntelligenceReport) -> str:
     """Format the report into clean GitHub-flavored Markdown."""
     lines = []
     lines.append(f"# {report.report_title}")
-    lines.append(f"**Target Entity:** {report.target_entity} | **Industry:** {report.industry} | **Date:** {report.report_date}\n")
+    constraint_meta = []
+    if getattr(report, "focus_domain", None):
+        constraint_meta.append(f"**Focus Pillar:** {report.focus_domain}")
+    if getattr(report, "geographic_scope", None) and report.geographic_scope != "Global":
+        constraint_meta.append(f"**Region:** {report.geographic_scope}")
+    if getattr(report, "exclusions", None):
+        constraint_meta.append(f"**Exclusions:** {report.exclusions}")
+    constraint_str = (" | " + " | ".join(constraint_meta)) if constraint_meta else ""
+    lines.append(f"**Target Entity:** {report.target_entity} | **Industry:** {report.industry}{constraint_str} | **Date:** {report.report_date}\n")
     lines.append("---\n")
 
     # Executive Summary
@@ -16,24 +24,24 @@ def generate_markdown_report(report: MarketIntelligenceReport) -> str:
     lines.append(report.executive_summary)
     lines.append("")
 
+    # Core Offerings
+    if report.key_offerings_and_capabilities:
+        lines.append("## 2. Key Offerings & Capabilities")
+        for o in report.key_offerings_and_capabilities:
+            lines.append(f"- **{o}**")
+        lines.append("")
+
     # Financial & Operational Highlights
     if report.financial_and_operational_highlights:
-        lines.append("## 2. Key Financial & Operational Highlights")
+        lines.append("## 3. Financial & Operational Highlights")
         lines.append("| Metric | Value | Period / Context |")
         lines.append("| :--- | :--- | :--- |")
         for f in report.financial_and_operational_highlights:
             lines.append(f"| **{f.metric}** | `{f.value}` | {f.context} |")
         lines.append("")
 
-    # Core Offerings
-    if report.key_offerings_and_capabilities:
-        lines.append("## 3. Core Offerings & Technology Capabilities")
-        for o in report.key_offerings_and_capabilities:
-            lines.append(f"- **{o}**")
-        lines.append("")
-
     # SWOT Analysis
-    lines.append("## 4. SWOT Strategic Analysis")
+    lines.append("## 4. Strategic SWOT Analysis")
     lines.append("### Strengths")
     for s in report.swot.strengths:
         lines.append(f"- {s}")
@@ -59,7 +67,7 @@ def generate_markdown_report(report: MarketIntelligenceReport) -> str:
 
     # Market Trends
     if report.market_trends:
-        lines.append("## 6. Industry Drivers & Technology Trends")
+        lines.append("## 6. Prevailing Market & Technology Trends")
         for trend in report.market_trends:
             lines.append(f"### {trend.trend_name} `[Adoption: {trend.adoption_velocity}]`")
             lines.append(f"- **Description:** {trend.description}")
@@ -67,7 +75,7 @@ def generate_markdown_report(report: MarketIntelligenceReport) -> str:
 
     # Strategic Risks
     if report.strategic_risks:
-        lines.append("## 7. Key Strategic Risks & Mitigation")
+        lines.append("## 7. Strategic Risks & Mitigation Matrix")
         for risk in report.strategic_risks:
             lines.append(f"### {risk.risk_title} `[Severity: {risk.severity}]`")
             lines.append(f"- **Risk Details:** {risk.description}")
@@ -75,14 +83,14 @@ def generate_markdown_report(report: MarketIntelligenceReport) -> str:
 
     # Strategic Recommendations
     if report.strategic_recommendations:
-        lines.append("## 8. Strategic Recommendations")
+        lines.append("## 8. Actionable Strategic Recommendations")
         for i, rec in enumerate(report.strategic_recommendations, 1):
             lines.append(f"{i}. **{rec}**")
         lines.append("")
 
     # Sources
     if report.sources_cited:
-        lines.append("## 9. Research Citations & Scraped Sources")
+        lines.append("## 9. Verified Sources & Citations")
         for s in report.sources_cited:
             relevance = f" - *{s.relevance}*" if s.relevance else ""
             lines.append(f"- [{s.title}]({s.url}){relevance}")
@@ -111,7 +119,7 @@ def generate_html_report(report: MarketIntelligenceReport) -> str:
     ])
 
     fin_cards = "".join([
-        f"""<div class="metric-card">
+        f"""<div class="metric-box metric-card">
             <div class="metric-title">{f.metric}</div>
             <div class="metric-val">{f.value}</div>
             <div class="metric-ctx">{f.context}</div>
@@ -324,6 +332,7 @@ def generate_html_report(report: MarketIntelligenceReport) -> str:
             <div class="meta">
                 <strong>Target:</strong> {report.target_entity} &nbsp;|&nbsp; 
                 <strong>Industry:</strong> {report.industry} &nbsp;|&nbsp; 
+                <strong>Scope:</strong> {getattr(report, 'focus_domain', None) or 'Entire Enterprise'} ({getattr(report, 'geographic_scope', 'Global')}) &nbsp;|&nbsp;
                 <strong>Report Generated:</strong> {report.report_date}
             </div>
         </header>
@@ -338,19 +347,19 @@ def generate_html_report(report: MarketIntelligenceReport) -> str:
 
         <h2>SWOT Analysis</h2>
         <div class="swot-grid">
-            <div class="swot-box strengths">
+            <div class="swot-card swot-box strengths">
                 <h3>Strengths (Internal)</h3>
                 <ul>{swot_s}</ul>
             </div>
-            <div class="swot-box weaknesses">
+            <div class="swot-card swot-box weaknesses">
                 <h3>Weaknesses (Internal)</h3>
                 <ul>{swot_w}</ul>
             </div>
-            <div class="swot-box opportunities">
+            <div class="swot-card swot-box opportunities">
                 <h3>Opportunities (External)</h3>
                 <ul>{swot_o}</ul>
             </div>
-            <div class="swot-box threats">
+            <div class="swot-card swot-box threats">
                 <h3>Threats (External)</h3>
                 <ul>{swot_t}</ul>
             </div>

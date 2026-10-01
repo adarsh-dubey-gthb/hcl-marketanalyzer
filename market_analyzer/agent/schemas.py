@@ -54,3 +54,6 @@ class MarketIntelligenceReport(BaseModel):
     strategic_risks: List[RiskFactor] = Field(description="Strategic and market risks")
     strategic_recommendations: List[str] = Field(description="Actionable strategic recommendations for market leadership")
     sources_cited: List[SourceCitation] = Field(default_factory=list, description="Verified sources and links gathered during agent research")
+    focus_domain: Optional[str] = Field(default=None, description="Specific business division, strategic pillar, or focus constraint analyzed")
+    geographic_scope: Optional[str] = Field(default="Global", description="Geographic boundary analyzed (e.g. Global, North America, Europe)")
+    exclusions: Optional[str] = Field(default=None, description="Explicit out-of-scope boundaries and excluded divisions")

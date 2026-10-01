@@ -41,6 +41,69 @@ def get_api_key(explicit_key: Optional[str] = None) -> Optional[str]:
     return None
 
 
+def get_fallback_api_key(explicit_key: Optional[str] = None) -> Optional[str]:
+    """
+    Retrieve and validate secondary fallback Google Gemini API key.
+    Checks explicit parameter, GOOGLE_API_KEY_2, and GEMINI_API_KEY_2.
+    """
+    if explicit_key and explicit_key.strip():
+        return explicit_key.strip()
+
+    key = os.getenv("GOOGLE_API_KEY_2") or os.getenv("GEMINI_API_KEY_2")
+    if key and key.strip():
+        return key.strip()
+
+    return None
+
+
+def get_all_api_keys(explicit_key: Optional[str] = None) -> List[str]:
+    """
+    Retrieve an ordered list of all configured Gemini API keys (Key 1, Key 2, Key 3, ...),
+    enabling seamless multi-tier failover chains.
+    """
+    load_dotenv(override=True)
+    keys = []
+    if explicit_key and explicit_key.strip():
+        keys.append(explicit_key.strip())
+
+    primary = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+    if primary and primary.strip() and primary.strip() not in keys:
+        keys.append(primary.strip())
+
+    # Scan for indexed fallback keys (e.g. GOOGLE_API_KEY_2, GOOGLE_API_KEY_3, ...)
+    for i in range(2, 11):
+        k = os.getenv(f"GOOGLE_API_KEY_{i}") or os.getenv(f"GEMINI_API_KEY_{i}")
+        if k and k.strip() and k.strip() not in keys:
+            keys.append(k.strip())
+
+    return keys
+
+
+def normalize_gemini_model(model_name: Optional[str] = None) -> str:
+    """
+    Resolve model names and aliases to active, valid Gemini model identifiers.
+    e.g., 'gemini 3.6 lite', 'gemini-3.6-lite', '3.6 lite' -> 'gemini-flash-lite-latest'.
+    Handles deprecation of sunset models (gemini-2.5-flash / gemini-2.0-flash) for newly created keys.
+    """
+    if not model_name or not model_name.strip():
+        model_name = os.getenv("DEFAULT_GEMINI_MODEL", "gemini-flash-lite-latest")
+
+    name = model_name.strip().lower()
+
+    # User requested 'gemini 3.6 lite' / 'flash-lite' / 'lite'
+    if any(term in name for term in ["3.6 lite", "3.6-lite", "3.6-flash-lite", "flash-lite", "lite"]):
+        return "gemini-flash-lite-latest"
+    elif "3.6" in name:
+        return "gemini-3.6-flash"
+    elif "3.8" in name:
+        return "gemini-3.8-flash"
+    elif any(term in name for term in ["2.5", "2.0", "1.5"]):
+        # Legacy/sunset models automatically routed to the latest 3.x Flash-Lite model
+        return "gemini-flash-lite-latest"
+
+    return model_name
+
+
 def check_environment_health() -> Dict[str, Any]:
     """
     Perform a comprehensive diagnostic check of the runtime environment,
@@ -123,13 +186,15 @@ def clean_extracted_text(text: str, max_chars: int = 4000) -> str:
     """
     if not text:
         return ""
-    # Collapse multiple consecutive newlines and spaces
+    # Standardize line breaks and trim per-line spacing
     cleaned = re.sub(r"\r\n|\r", "\n", text)
-    cleaned = re.sub(r"[ \t]+", " ", cleaned)
+    lines = [re.sub(r"[ \t]+", " ", line).strip() for line in cleaned.split("\n")]
+    cleaned = "\n".join(lines)
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned).strip()
     if len(cleaned) > max_chars:
         return cleaned[:max_chars] + f"\n... [Truncated for brevity ({len(cleaned)} total chars)]"
     return cleaned
+
 
 
 def format_financial_figure(amount: float, currency: str = "$") -> str:

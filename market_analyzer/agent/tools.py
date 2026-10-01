@@ -3,9 +3,15 @@
 import json
 import logging
 from typing import List, Dict, Any, Optional
-from langchain_core.tools import tool
+from langchain_core.tools import tool, BaseTool
+
+if "__call__" not in BaseTool.__dict__:
+    BaseTool.__call__ = lambda self, *args, **kwargs: self.invoke(kwargs if kwargs else (args[0] if len(args) == 1 else args))
+
+
 from market_analyzer.scraper.searcher import search_web, search_news
 from market_analyzer.scraper.extractor import scrape_page_content
+
 
 logger = logging.getLogger(__name__)
 

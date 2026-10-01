@@ -17,9 +17,11 @@ An autonomous, multi-stage **Market Intelligence & Competitor Analysis Agent** b
   - ⚠️ **Strategic Risks & Mitigation Framework**
   - 🎯 **Actionable Executive Recommendations**
   - 🔗 **Verified Sources & Web Citations**
-- **Modern Interactive Web Dashboard**: Built with Streamlit featuring real-time agent execution traces, interactive Plotly benchmarking & radar charts, and instant export tools.
+- **Modern Executive Dark Dashboard**: Built with Streamlit featuring glassmorphism design, real-time agent execution traces, interactive Plotly benchmarking & radar charts, and instant demo loading.
+- **💬 Interactive Post-Analysis Copilot (Chatbot)**: Dedicated conversational AI assistant grounded directly in the synthesized intelligence report. Supports real-time streaming Q&A, suggested strategy prompt chips (e.g., 30-60-90 day execution roadmaps, competitor AI deep-dives, scenario simulations), and Markdown transcript export.
 - **Multi-Format Export Center**: One-click download as **Markdown (.md)**, **Standalone HTML (.html)**, or **JSON Schema (.json)**.
 - **CLI Mode**: Headless command-line tool for scheduling or automated batch reporting.
+
 
 ---
 
