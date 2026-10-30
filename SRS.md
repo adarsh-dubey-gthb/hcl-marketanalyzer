@@ -11,20 +11,18 @@
 
 | Field | Details |
 | :--- | :--- |
-| **Project Title** | Autonomous Agentic Web Scraper & Strategic Market Intelligence Analyzer |
-| **Student Name** | Adarsh Dubey |
-| **Roll Number** | 2400320100061 |
+| **Project ID & Title** | **Project 81:** Agentic Web Scraper and Market Intelligence Reporter |
+| **Programme / Domain** | HCLTech Career Shaper Programme (2025–26) \| Agentic AI / Python |
+| **Student Name** | **Adarsh Dubey** |
+| **University Roll Number** | **2400320100061** |
 | **Branch / Department** | Computer Science & Engineering |
 | **College Name** | ABES Engineering College, Ghaziabad |
-| **Project Guide Name** | **Radhika Singhal** |
-| **Academic Year** | 2026–27 |
-
-> **Important Instructions Adhered To:**
-> - Kept the SRS short, clear, and practical.
-> - Focused strictly on features actually implemented in the 4-day project.
-> - Used simple and clear technical language.
-> - All diagrams match the actual project codebase and architecture.
-> - Did not claim features that have not been developed.
+| **Project Mentor / Guide** | **Radhika Singhal** |
+| **Academic Year** | 2025–26 |
+| **GitHub Repository** | [https://github.com/adarsh-dubey-gthb/hcl-marketanalyzer.git](https://github.com/adarsh-dubey-gthb/hcl-marketanalyzer.git) |
+| **Live Streamlit App** | [https://marketanalyzer.streamlit.app/](https://marketanalyzer.streamlit.app/) |
+| **Specification Standard** | IEEE Std 830-1998 (Recommended Practice for SRS) |
+| **Document Status & Version** | Approved Production Baseline \| Version 1.0.0 |
 
 ---
 
@@ -299,16 +297,9 @@ flowchart TD
 
 ---
 
-### Final SRS Checklist
+## 18. Institutional Approval & Formal Sign-Off
 
-| Checklist Item | Included | Remarks |
-| :--- | :---: | :--- |
-| **1. Cover Page** | **Yes [X]** | Project Guide: **Radhika Singhal**, Student: **Adarsh Dubey** |
-| **2. Abstract & 3. Problem Statement** | **Yes [X]** | 150-200 words, practical problem definition |
-| **4. Objectives & 5. Proposed Solution** | **Yes [X]** | 4-6 clear objectives & 8-step workflow |
-| **6. Scope & 7. Functional Requirements** | **Yes [X]** | FR-01 to FR-08 tabulated |
-| **8. Non-Functional Requirements & 9. Tech Stack** | **Yes [X]** | Only technologies actually used in project |
-| **10. Architecture & 11. System Design** | **Yes [X]** | AI Architecture, Use Case, DFD, Schemas |
-| **12. Module Description** | **Yes [X]** | Modules 1-6 detailed with functions |
-| **13. Database Design & 14. Testing** | **Yes [X]** | Data dictionary + TC01-TC06 test cases |
-| **15. Limitations, 16. Future Scope & 17. References** | **Yes [X]** | Realistic 4-day project limitations & sources |
+| Prepared By (Candidate) | Reviewed & Approved By (Project Mentor) |
+| :--- | :--- |
+| **Adarsh Dubey**<br/>University Roll No: 2400320100061<br/>B.Tech III Year, Computer Science & Engineering<br/>ABES Engineering College, Ghaziabad | **Radhika Singhal**<br/>Project Mentor / Guide<br/>Department of Computer Science & Engineering<br/>ABES Engineering College, Ghaziabad |
+| Signature: ___________________________<br/>Date: 30 October 2026 | Signature: ___________________________<br/>Date: 30 October 2026 |

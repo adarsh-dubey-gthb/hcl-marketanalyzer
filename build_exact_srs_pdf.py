@@ -2,7 +2,7 @@
 SRS PDF Generator — Professional Industry Format (Referencing Synopsis)
 ======================================================================
 Autonomous Agentic Web Scraper & Strategic Market Intelligence Analyzer
-B.Tech 3rd Year Mini Project | Academic Year 2026-27 | ABES Engineering College
+HCLTech Career Shaper Programme — III Year Industry Project (2025–26) | ABES Engineering College
 Project Guide: Radhika Singhal | Student: Adarsh Dubey (2400320100061)
 
 Incorporates high-fidelity diagrams matching the Project Synopsis:
@@ -13,6 +13,8 @@ Incorporates high-fidelity diagrams matching the Project Synopsis:
 - Figure 5: UML Class & Pydantic Schema Diagram
 """
 
+import os
+import shutil
 import sys
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
@@ -28,6 +30,7 @@ from reportlab.graphics.shapes import (
 from reportlab.pdfgen import canvas
 
 PDF_FILENAME = "SRS_Market_Intelligence_Analyzer.pdf"
+SUBMISSION_PDF_FILENAME = "SRS_Market_Intelligence_Analyzer_Adarsh_Dubey_2400320100061.pdf"
 
 # ── Color Palette (Matching Synopsis Reference) ──────────────────────────────
 C_NAVY          = colors.HexColor("#1E293B")
@@ -112,7 +115,7 @@ class NumberedCanvas(canvas.Canvas):
         self.rect(54, 38, W - 108, 1.2, fill=1, stroke=0)
         self.setFont("Helvetica", 7.5)
         self.setFillColor(C_GRAY_MED)
-        self.drawString(54, 26, "B.Tech Mini Project | ABES Engineering College | Guide: Radhika Singhal")
+        self.drawString(54, 26, "HCLTech Career Shaper — Project 81 | ABES Engineering College | Guide: Radhika Singhal")
         self.setFont("Helvetica-Bold", 7.5)
         self.setFillColor(C_NAVY)
         self.drawRightString(W - 54, 26, f"Page {p} of {total}")
@@ -707,18 +710,18 @@ def make_class_diagram():
 def make_styles():
     st = getSampleStyleSheet()
     h1 = ParagraphStyle("H1", parent=st["Normal"],
-                          fontName="Helvetica-Bold", fontSize=12.5, leading=16,
-                          textColor=C_NAVY, spaceBefore=8, spaceAfter=3,
+                          fontName="Helvetica-Bold", fontSize=11.5, leading=14,
+                          textColor=C_NAVY, spaceBefore=5, spaceAfter=2,
                           keepWithNext=True)
     h2 = ParagraphStyle("H2", parent=st["Normal"],
-                          fontName="Helvetica-Bold", fontSize=10, leading=13,
-                          textColor=C_BLUE, spaceBefore=6, spaceAfter=2,
+                          fontName="Helvetica-Bold", fontSize=9.5, leading=12,
+                          textColor=C_BLUE, spaceBefore=4, spaceAfter=1,
                           keepWithNext=True)
     body = ParagraphStyle("Body", parent=st["Normal"],
-                            fontName="Helvetica", fontSize=9, leading=12.5,
-                            textColor=C_GRAY_HVY, spaceAfter=4, alignment=TA_JUSTIFY)
+                            fontName="Helvetica", fontSize=8.5, leading=11.5,
+                            textColor=C_GRAY_HVY, spaceAfter=2.5, alignment=TA_JUSTIFY)
     bullet = ParagraphStyle("Bullet", parent=body,
-                              leftIndent=14, firstLineIndent=-10, spaceAfter=2, alignment=TA_LEFT)
+                              leftIndent=12, firstLineIndent=-9, spaceAfter=1.2, alignment=TA_LEFT)
     tc = ParagraphStyle("TC", parent=st["Normal"],
                           fontName="Helvetica", fontSize=8, leading=11,
                           textColor=C_GRAY_HVY)
@@ -752,7 +755,7 @@ def alt_rows(rows):
 
 def hr(col=None, lw=0.8):
     return HRFlowable(width="100%", thickness=lw,
-                      color=col or C_RULE, spaceAfter=4, spaceBefore=2)
+                      color=col or C_RULE, spaceAfter=2, spaceBefore=1)
 
 
 # ── PDF BUILDER ──────────────────────────────────────────────────────────────
@@ -770,34 +773,39 @@ def build_pdf():
     # ═════════════════════════════════════════════════════════════════════════
     # PAGE 1: OFFICIAL COVER & SPECIFICATION OVERVIEW
     # ═════════════════════════════════════════════════════════════════════════
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
     story.append(Paragraph("<b>ABES ENGINEERING COLLEGE, GHAZIABAD</b>", ParagraphStyle(
         "ColHdr", fontName="Helvetica-Bold", fontSize=11, leading=14,
         textColor=C_NAVY, alignment=TA_CENTER)))
-    story.append(Paragraph("Department of Computer Science & Engineering | Academic Year 2026-27", ParagraphStyle(
+    story.append(Paragraph("Department of Computer Science & Engineering | Academic Year 2025–26", ParagraphStyle(
         "SubHdr", fontName="Helvetica", fontSize=8.5, leading=12,
         textColor=C_GRAY_MED, alignment=TA_CENTER)))
-    story.append(Spacer(1, 12))
+    story.append(Paragraph("HCLTech Career Shaper Programme — III Year Industry Project", ParagraphStyle(
+        "ProgHdr", fontName="Helvetica-Bold", fontSize=8.5, leading=12,
+        textColor=C_BLUE, alignment=TA_CENTER)))
+    story.append(Spacer(1, 10))
 
     story.append(Paragraph("<b>SOFTWARE REQUIREMENTS SPECIFICATION</b>", ParagraphStyle(
-        "SRS_Title", fontName="Helvetica-Bold", fontSize=16, leading=20,
+        "SRS_Title", fontName="Helvetica-Bold", fontSize=15, leading=19,
         textColor=C_BLUE, alignment=TA_CENTER)))
     story.append(Paragraph("<b>Autonomous Agentic Web Scraper & Strategic Market Intelligence Analyzer</b>", ParagraphStyle(
-        "SRS_Name", fontName="Helvetica-Bold", fontSize=12, leading=16,
+        "SRS_Name", fontName="Helvetica-Bold", fontSize=11.5, leading=15,
         textColor=C_NAVY, alignment=TA_CENTER)))
     story.append(Paragraph("A Multi-Stage ReAct Intelligence Agent for Autonomous Web Research, Competitive Benchmarking, and Structured Synthesis", ParagraphStyle(
-        "SRS_Sub", fontName="Helvetica-Oblique", fontSize=8.5, leading=12,
+        "SRS_Sub", fontName="Helvetica-Oblique", fontSize=8, leading=11,
         textColor=C_GRAY_MED, alignment=TA_CENTER)))
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # Academic Metadata Table
     cov_data = [
-        [Paragraph("Project Title", tc_bold), Paragraph("Autonomous Agentic Web Scraper & Strategic Market Intelligence Analyzer", tc)],
-        [Paragraph("Project Type / Domain", tc_bold), Paragraph("Agentic AI, Autonomous Agents, NLP, Web Scraping, Strategic Market Intelligence", tc)],
+        [Paragraph("Project ID & Title", tc_bold), Paragraph("<b>Project 81:</b> Agentic Web Scraper and Market Intelligence Reporter", tc)],
+        [Paragraph("Programme / Domain", tc_bold), Paragraph("HCLTech Career Shaper Programme (2025–26) | Agentic AI / Python", tc)],
         [Paragraph("Student Name", tc_bold), Paragraph("<b>Adarsh Dubey</b>", tc)],
         [Paragraph("University Roll No.", tc_bold), Paragraph("<b>2400320100061</b>", tc)],
         [Paragraph("Department / College", tc_bold), Paragraph("Computer Science & Engineering, ABES Engineering College, Ghaziabad", tc)],
-        [Paragraph("Project Guide", tc_bold), Paragraph("<b>Radhika Singhal</b>", tc)],
+        [Paragraph("Project Mentor / Guide", tc_bold), Paragraph("<b>Radhika Singhal</b>", tc)],
+        [Paragraph("GitHub Repository", tc_bold), Paragraph('<font color="#2563EB"><u>https://github.com/adarsh-dubey-gthb/hcl-marketanalyzer.git</u></font>', tc)],
+        [Paragraph("Live Streamlit App", tc_bold), Paragraph('<font color="#2563EB"><u>https://marketanalyzer.streamlit.app/</u></font>', tc)],
         [Paragraph("Target Case-Study Entities", tc_bold), Paragraph("HCL Technologies, TCS, Infosys, Wipro, Accenture", tc)],
         [Paragraph("Specification Standard", tc_bold), Paragraph("IEEE Std 830-1998 (Recommended Practice for SRS)", tc)],
         [Paragraph("Document Status & Version", tc_bold), Paragraph("Approved Production Baseline | Version 1.0.0", tc)],
@@ -808,13 +816,13 @@ def build_pdf():
         ("INNERGRID",     (0, 0), (-1, -1), 0.5, C_GRAY_LITE),
         ("BACKGROUND",    (0, 0), (0, -1),  C_GRAY_PALE),
         ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
-        ("TOPPADDING",    (0, 0), (-1, -1), 5),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+        ("TOPPADDING",    (0, 0), (-1, -1), 3.5),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 3.5),
         ("LEFTPADDING",   (0, 0), (-1, -1), 8),
         ("RIGHTPADDING",  (0, 0), (-1, -1), 8),
     ]))
     story.append(cov_table)
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 10))
 
     # Executive Overview Callout Box
     story.append(Paragraph("<b>Document Executive Summary & IEEE Compliance Statement</b>", h2))
@@ -984,7 +992,7 @@ def build_pdf():
     story.append(nfr_table)
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("9. Technologies Used (Matching Synopsis Table 9)", h1))
+    story.append(Paragraph("9. Technologies Used & Architectural Stack", h1))
     story.append(hr())
     tech_rows = [
         [Paragraph("<b>Category</b>", th), Paragraph("<b>Technology / Tool</b>", th), Paragraph("<b>Role in Architecture</b>", th)],
@@ -1033,7 +1041,7 @@ def build_pdf():
         "<b>Figure 2. High-level system architecture (layered view: interface, agent brain, tool belt, public web, results)</b>", caption))
     story.append(Spacer(1, 4))
 
-    # HOW TO READ THE DIAGRAM (EXACT FROM SYNOPSIS)
+    # HOW TO READ THE DIAGRAM
     story.append(Paragraph("<b>How to read the diagram:</b>", h2))
     read_steps = [
         [Paragraph("<b>(1)</b>", tc_bold), Paragraph("The user types a research objective (a company, competitor or market question) into the Streamlit dashboard.", tc)],
@@ -1116,9 +1124,9 @@ def build_pdf():
     story.append(PageBreak())
 
     # ═════════════════════════════════════════════════════════════════════════
-    # PAGE 8: MODULE DESCRIPTION (ALL 9 MODULES FROM SYNOPSIS)
+    # PAGE 8: MODULE DESCRIPTION
     # ═════════════════════════════════════════════════════════════════════════
-    story.append(Paragraph("12. Module Description (Matching Synopsis Section 10)", h1))
+    story.append(Paragraph("12. Module Architecture & Functional Breakdown", h1))
     story.append(hr())
     story.append(Paragraph(
         "The architecture is partitioned into nine discrete functional modules that isolate specific computational concerns:", body))
@@ -1173,7 +1181,7 @@ def build_pdf():
     story.append(PageBreak())
 
     # ═════════════════════════════════════════════════════════════════════════
-    # PAGE 9: DATABASE DESIGN & TESTING (MATCHING SYNOPSIS SECTION 12)
+    # PAGE 9: DATABASE DESIGN & TESTING
     # ═════════════════════════════════════════════════════════════════════════
     story.append(Paragraph("13. Database & Data Storage Design", h1))
     story.append(hr())
@@ -1184,7 +1192,7 @@ def build_pdf():
         "This file-based caching model avoids unnecessary relational database overhead while ensuring report provenance and auditability.", body))
     story.append(Spacer(1, 4))
 
-    story.append(Paragraph("14. Testing & Verification (Matching Synopsis Section 12)", h1))
+    story.append(Paragraph("14. Testing Levels & Verification Strategy", h1))
     story.append(hr())
     story.append(Paragraph(
         "Testing is structured across four rigorous levels to validate isolated components, inter-stage communication, end-to-end "
@@ -1211,7 +1219,7 @@ def build_pdf():
     story.append(tl_table)
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<b>Sample Test Cases Matrix (Exact from Synopsis Table 12):</b>", h2))
+    story.append(Paragraph("<b>Sample Test Cases Matrix (T1 through T8):</b>", h2))
     test_cases = [
         [Paragraph("<b>ID</b>", th), Paragraph("<b>Test Case Description</b>", th), Paragraph("<b>Expected Verified Result</b>", th)],
         [Paragraph("T1", tc_bold), Paragraph("Enter a valid company research objective.", tc), Paragraph("Relevant Web and News sources are discovered dynamically.", tc)],
@@ -1232,7 +1240,7 @@ def build_pdf():
     # ═════════════════════════════════════════════════════════════════════════
     # PAGE 10: RESULTS, LIMITATIONS, FUTURE SCOPE, REFERENCES & SIGN-OFF
     # ═════════════════════════════════════════════════════════════════════════
-    story.append(Paragraph("15. Results & Evaluation Criteria (Matching Synopsis Table 13)", h1))
+    story.append(Paragraph("15. Results & Evaluation Criteria", h1))
     story.append(hr())
     eval_rows = [
         [Paragraph("<b>Evaluation Criterion</b>", th), Paragraph("<b>Verification Method</b>", th), Paragraph("<b>Target Acceptance Standard</b>", th)],
@@ -1258,7 +1266,7 @@ def build_pdf():
         "&bull; <b>Human Verification Required:</b> High-stakes investment or strategic decisions should review underlying source URLs.", body))
     story.append(Spacer(1, 4))
 
-    story.append(Paragraph("17. Future Scope (Matching Synopsis Section 14)", h1))
+    story.append(Paragraph("17. Future Scope & Product Roadmap", h1))
     story.append(hr())
     story.append(Paragraph(
         "&bull; Introduce specialized sub-agents for financial statement analysis, patent auditing, and executive synthesis.<br/>"
@@ -1268,7 +1276,7 @@ def build_pdf():
         "&bull; Implement real-time market anomaly alerts and notifications for breaking competitive developments.", body))
     story.append(Spacer(1, 4))
 
-    story.append(Paragraph("18. References (Matching Synopsis Section 15)", h1))
+    story.append(Paragraph("18. References", h1))
     story.append(hr())
     story.append(Paragraph(
         "1. Yao, S. et al. (2022). <i>ReAct: Synergizing Reasoning and Acting in Language Models</i>. ICLR 2023 / arXiv:2210.03629.<br/>"
@@ -1283,10 +1291,10 @@ def build_pdf():
     # Formal Approval / Sign-off Block
     sign_data = [
         [Paragraph("<b>Prepared By:</b>", th), Paragraph("<b>Reviewed & Approved By:</b>", th)],
-        [Paragraph("<b>Adarsh Dubey</b><br/>Roll No: 2400320100061<br/>Department of Computer Science & Engineering<br/>ABES Engineering College, Ghaziabad", tc),
-         Paragraph("<b>Radhika Singhal</b><br/>Project Guide<br/>Department of Computer Science & Engineering<br/>ABES Engineering College, Ghaziabad", tc)],
-        [Paragraph("Signature: ___________________________<br/>Date: 30 September 2026", tc_bold),
-         Paragraph("Signature: ___________________________<br/>Date: 30 September 2026", tc_bold)]
+        [Paragraph("<b>Adarsh Dubey</b><br/>Roll No: 2400320100061<br/>B.Tech III Year, Computer Science & Engineering<br/>ABES Engineering College, Ghaziabad", tc),
+         Paragraph("<b>Radhika Singhal</b><br/>Project Mentor / Guide<br/>Department of Computer Science & Engineering<br/>ABES Engineering College, Ghaziabad", tc)],
+        [Paragraph("Signature: ___________________________<br/>Date: 30 October 2026", tc_bold),
+         Paragraph("Signature: ___________________________<br/>Date: 30 October 2026", tc_bold)]
     ]
     sign_table = Table(sign_data, colWidths=[252, 252])
     sign_table.setStyle(TableStyle([
@@ -1302,7 +1310,11 @@ def build_pdf():
     story.append(sign_table)
 
     doc.build(story, canvasmaker=NumberedCanvas)
-    print(f"Successfully generated {PDF_FILENAME}")
+    shutil.copy2(PDF_FILENAME, SUBMISSION_PDF_FILENAME)
+    os.makedirs("deliverables", exist_ok=True)
+    shutil.copy2(PDF_FILENAME, os.path.join("deliverables", PDF_FILENAME))
+    shutil.copy2(SUBMISSION_PDF_FILENAME, os.path.join("deliverables", SUBMISSION_PDF_FILENAME))
+    print(f"Successfully generated {PDF_FILENAME} and {SUBMISSION_PDF_FILENAME} (and copied to deliverables/)")
 
 
 if __name__ == "__main__":
