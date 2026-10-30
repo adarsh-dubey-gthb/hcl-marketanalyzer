@@ -29,10 +29,20 @@ logger = logging.getLogger(__name__)
 def get_api_key(explicit_key: Optional[str] = None) -> Optional[str]:
     """
     Retrieve and validate the Google Gemini API key.
-    Checks explicit parameter, GOOGLE_API_KEY, and GEMINI_API_KEY.
+    Checks explicit parameter, Streamlit Cloud st.secrets, GOOGLE_API_KEY, and GEMINI_API_KEY.
     """
     if explicit_key and explicit_key.strip():
         return explicit_key.strip()
+
+    # Check Streamlit Cloud Secrets
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets"):
+            for sec_name in ["GEMINI_API_KEY", "GOOGLE_API_KEY"]:
+                if sec_name in st.secrets and str(st.secrets[sec_name]).strip():
+                    return str(st.secrets[sec_name]).strip()
+    except Exception:
+        pass
 
     key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
     if key and key.strip():
@@ -44,10 +54,19 @@ def get_api_key(explicit_key: Optional[str] = None) -> Optional[str]:
 def get_fallback_api_key(explicit_key: Optional[str] = None) -> Optional[str]:
     """
     Retrieve and validate secondary fallback Google Gemini API key.
-    Checks explicit parameter, GOOGLE_API_KEY_2, and GEMINI_API_KEY_2.
+    Checks explicit parameter, Streamlit Cloud st.secrets, GOOGLE_API_KEY_2, and GEMINI_API_KEY_2.
     """
     if explicit_key and explicit_key.strip():
         return explicit_key.strip()
+
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets"):
+            for sec_name in ["GEMINI_API_KEY_2", "GOOGLE_API_KEY_2"]:
+                if sec_name in st.secrets and str(st.secrets[sec_name]).strip():
+                    return str(st.secrets[sec_name]).strip()
+    except Exception:
+        pass
 
     key = os.getenv("GOOGLE_API_KEY_2") or os.getenv("GEMINI_API_KEY_2")
     if key and key.strip():
@@ -59,12 +78,30 @@ def get_fallback_api_key(explicit_key: Optional[str] = None) -> Optional[str]:
 def get_all_api_keys(explicit_key: Optional[str] = None) -> List[str]:
     """
     Retrieve an ordered list of all configured Gemini API keys (Key 1, Key 2, Key 3, ...),
-    enabling seamless multi-tier failover chains.
+    enabling seamless multi-tier failover chains across environment variables and Streamlit Cloud secrets.
     """
     load_dotenv(override=True)
     keys = []
     if explicit_key and explicit_key.strip():
         keys.append(explicit_key.strip())
+
+    # Check Streamlit Cloud Secrets first
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets"):
+            for sec_name in ["GEMINI_API_KEY", "GOOGLE_API_KEY"]:
+                if sec_name in st.secrets and str(st.secrets[sec_name]).strip():
+                    s_val = str(st.secrets[sec_name]).strip()
+                    if s_val not in keys:
+                        keys.append(s_val)
+            for i in range(2, 11):
+                for sec_name in [f"GEMINI_API_KEY_{i}", f"GOOGLE_API_KEY_{i}"]:
+                    if sec_name in st.secrets and str(st.secrets[sec_name]).strip():
+                        s_val = str(st.secrets[sec_name]).strip()
+                        if s_val not in keys:
+                            keys.append(s_val)
+    except Exception:
+        pass
 
     primary = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
     if primary and primary.strip() and primary.strip() not in keys:

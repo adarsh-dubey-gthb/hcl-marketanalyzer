@@ -1,0 +1,8 @@
+column_name,data_type,sample_value_1,sample_value_2,sample_value_3,nullable,description_fill_in
+run_id,String (Alphanumeric),RUN0001,RUN0002,RUN0003,No,Unique identifier assigned to each automated web scraping execution run; format RUN followed by 4 digits.
+target_domain,String (FQDN),hcltech.com,tcs.com,infosys.com,No,"Fully qualified domain name of the web target crawled and analyzed by the scraping agent across 10 industry sectors (e.g., hcltech.com, tcs.com, bloomberg.com)."
+pages_crawled,Integer (Count),432,403,13,No,"Total number of distinct HTML web pages discovered, fetched, and traversed during the session."
+data_extracted_rows,Integer (Count),5186,9556,2511,No,Total count of structured market intelligence data records successfully extracted from crawled web pages.
+scrape_duration_s,Float (Seconds),397.0,526.2,343.0,No,"Total wall-clock duration of the web crawl, HTML cleaning, and entity extraction pipeline in seconds."
+status,String (Enum: success | partial | failed),partial,success,success,No,"Operational execution outcome of the scrape job: 'success' (completed), 'partial' (degraded/rate-limited), or 'failed'."
+report_generated,Integer / Boolean (0 or 1),1,0,1,No,Binary indicator flag where 1 indicates an AI market intelligence report was generated and 0 indicates report omitted.
